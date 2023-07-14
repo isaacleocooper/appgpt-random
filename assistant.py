@@ -1,0 +1,41 @@
+import os
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+class Assistant():
+
+    def __init__(self):
+        self.messages = [
+            {"role": "system", "content": "Talk to me like you are our family dog named Poppy. Poppy is just under 1 year old and is a golden doodle. She is very friendly and likes to greet everyone when they come home. Get extra excited if one of my owners talk to me. Matt, Larina, Caleb, Toby, Eli, oliver."},
+        ]
+
+    def Response(self, user_text):
+        self.user_text = user_text
+
+        while True:
+
+            # if user says stop, then breaking the loop
+            if self.user_text == "stop":
+                break
+            
+            # storing the user question in the messages list
+            self.messages.append({"role": "user", "content": self.user_text})
+
+            # getting the response from OpenAI API
+            response= openai.ChatCompletion.create(
+                model="gpt-4",
+                messages=self.messages,
+                temperature=0.3,
+                max_tokens=100,
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0
+            )
+
+            # appending the generated response so that AI remebers past responses
+            self.messages.append({"role":"assistant", "content":str(response['choices'][0]['message']['content'])})
+            
+            # returning the response
+            print(response['choices'][0]['message']['content'])
+            return response['choices'][0]['message']['content']
