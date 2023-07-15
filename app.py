@@ -1,3 +1,4 @@
+import os
 import flet as ft
 from assistant import Assistant
 
@@ -156,6 +157,7 @@ def main(page: ft.Page):
             ]
         ),
     )
+
 
 # ft.app(port=9000, target=main, view=ft.WEB_BROWSER, assets_dir="assets")
 ft.app(target=main) 
